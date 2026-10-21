@@ -48,13 +48,13 @@
 --- Runtime type values: tagged values representing types. Import these
 --- in type signatures and type-level handl code.
 
-export Int := { "__tag__": "int", "__registry__": "type", "kind": "primitive" }
-export Str := { "__tag__": "str", "__registry__": "type", "kind": "primitive" }
-export Bool := { "__tag__": "bool", "__registry__": "type", "kind": "primitive" }
-export Null := { "__tag__": "null", "__registry__": "type", "kind": "primitive" }
-export Float := { "__tag__": "float", "__registry__": "type", "kind": "primitive" }
-export Number := { "__tag__": "number", "__registry__": "type", "kind": "primitive" }
-export Nat := { "__tag__": "nat", "__registry__": "type", "kind": "primitive" }
+export Int := type.Int()
+export Str := type.Str()
+export Bool := type.Bool()
+export Null := type.Null()
+export Float := type.Float()
+export Number := type.Number()
+export Nat := type.Nat()
 
 --- ## ADR-0106 nominal identities (sym-backed, alongside the legacy tags)
 ---
