@@ -141,3 +141,33 @@ export transport := (p, v) ~> (p # v)
 ---   * a composite `f >>> P` of dependent operands flattens to
 ---     `type.function` because no AST body exists to carry a
 ---     `body_closure` across composition.
+
+--- ## `Path` as data -- ADR-0153 sec.2 (workstream D)
+---
+--- `Path(a, b)` is not a primitive former: it is the Sigma of a
+--- 2-cell `e : a ~[2]~> b`, its inverse `eInv : b ~[2]~> a`, and the
+--- two coherence 3-cells witnessing `e >>>[2] eInv ~[3]~> id(a)` and
+--- `eInv >>>[2] e ~[3]~> id(b)`. Here `~[n]~>` is the
+--- dimension-indexed hom `Hom(n, s, t)` (a dimension index, never a
+--- coeffect grade); `id(x)` is the identity cell (`id(f) : Hom(2,f,f)`
+--- on an arrow, `id(a) : Hom(2,a,a)` -- refl -- on an object);
+--- `>>>[k]` composes k-cells along their shared boundary. The
+--- `~[3]~>` coherence terms parse and store but are not checked --
+--- the n >= 3 honest bound -- so the Path data is real while the
+--- equality proof at level 3 remains aspirational.
+
+export id := x ~> id2 x
+export Sigma := (A, F) ~> {"__tag__": "type.sigma", "param": A, "body": F}
+export Path := (a, b) ~> Sigma(a ~[2]~> b, e ~> Sigma(b ~[2]~> a, eInv ~> Sigma((e >>>[2] eInv) ~[3]~> id(a), cohL ~> (eInv >>>[2] e) ~[3]~> id(b))))
+
+--- ## Cell laws, stated for k <= 2 -- stored, not checked (n >= 3)
+---
+--- Associativity and unit laws of vertical composition `>>>[2]`, and
+--- the 2-cell interchange between horizontal `=>|` and vertical `=>>`
+--- composition -- all stated as `~[3]~>` equations (level-3 cells,
+--- unchecked per the honest bound).
+
+export comp_assoc := (a, b, c) ~> ((a >>>[2] b) >>>[2] c) ~[3]~> (a >>>[2] (b >>>[2] c))
+export id_left := (f, e) ~> (id(f) >>>[2] e) ~[3]~> e
+export id_right := (g, e) ~> (e >>>[2] id(g)) ~[3]~> e
+export interchange := (al, al2, be, be2) ~> ((al =>| al2) =>> (be =>| be2)) ~[3]~> ((al =>> be) =>| (al2 =>> be2))
