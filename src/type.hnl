@@ -54,8 +54,28 @@ cap "type.coalesce"
 cap "type.is"
 cap "type.must"
 cap "type.may"
-cap "type.not"
-cap "type.when"
+cap "type.is_nominal"
+cap "type.instanceof"
+cap "type.ty"
+cap "type.Int"
+cap "type.Str"
+cap "type.Bool"
+cap "type.Null"
+cap "type.Float"
+cap "type.Number"
+cap "type.Nat"
+cap "type.Obj"
+cap "type.Array"
+cap "type.Value"
+cap "type.Type"
+cap "type.Grade"
+cap "type.Unit"
+op "type.is_nominal" : Value -> Bool
+  guarantee: True
+op "type.instanceof" : (Value, Value) -> Bool
+  guarantee: True
+op "type.ty" : Value -> Value
+  guarantee: True
 op "type.of" : Value -> String
   guarantee: IsString(output)
 op "type.type_of" : Value -> String
@@ -82,45 +102,26 @@ op "type.may" : (Value, String) -> Bool
   guarantee: True
 op "type.not" : (Value, String) -> Bool
   guarantee: True
---- ## Type values (type-as-values)
+op "type.Unit" : Value -> Value
+  guarantee: True
+--- ## Type values (type-as-values) -- seeded nominals (ADR-0154 sec.1/2)
 ---
---- Runtime type values: tagged values representing types. Import these
---- in type signatures and type-level handl code.
-
-export Int :: { "__tag__": "int", "__registry__": "type", "kind": "primitive" }
-export Str :: { "__tag__": "str", "__registry__": "type", "kind": "primitive" }
-export Bool :: { "__tag__": "bool", "__registry__": "type", "kind": "primitive" }
-export Null :: { "__tag__": "null", "__registry__": "type", "kind": "primitive" }
-export Float :: { "__tag__": "float", "__registry__": "type", "kind": "primitive" }
-export Number :: { "__tag__": "number", "__registry__": "type", "kind": "primitive" }
-export Nat :: { "__tag__": "nat", "__registry__": "type", "kind": "primitive" }
-
---- ## ADR-0106 nominal identities (sym-backed, alongside the legacy tags)
----
---- Nominal identities per ADR-0106 §2. `NumberN` is a root nominal
---- (`sym()` -- a fresh object with a unique nominal identity); `IntN` and
---- `FloatN` are children parented to it (`sym(NumberN)`), so the `sym`
---- parent graph *is* the subtyping relation: `FloatN instanceof NumberN`
---- (runtime parent-chain walk) and `FloatN <: NumberN` (the same walk,
---- read statically) with no parallel `Subtype<A, B>` subsystem. `NatN` is
---- parented to `IntN` (`Nat <: Int <: Number`).
----
---- The legacy `__tag__`-tagged values above (Int/Str/Bool/Null/Float/
---- Number/Nat) are NOT deleted yet: existing kind predicates and tag
---- checks (`type.is`, `tag.tag_of`, registry equality) match on the
---- `__tag__` string, which a `{"__sym__": ...}` nominal does not carry.
---- Behavior compatibility is preserved by keeping both spellings until
---- consumers migrate. Note the semantic difference: legacy tags compare
---- by structure (two `{__tag__: "int"}` objects are equal) while nominals
---- compare by identity (two `sym()` mints are distinct even with the same
---- presentation name) -- and `instanceof` walks the nominal parent chain,
---- never the `__tag__` string.
----
---- Surface: `sym()` / `sym(parent)` need no new syntax -- they parse via
---- the existing `call` rule and resolve through the `sym` module (see
---- `SymModule` in `handl-runtime`). `NumberN` below is literally
---- `sym()`; `FloatN` is literally `sym(NumberN)`.
-export NumberN :: sym()
-export IntN :: sym(NumberN)
-export FloatN :: sym(NumberN)
-export NatN :: sym(IntN)
+--- Declared types are seeded nominals `{"__sym__": {handle, name,
+--- parent, type}}` minted by the host `type.<Name>` ops: deterministic
+--- content-hash identity (ADR-0154 sec.1), `parent` = <: edges
+--- (`Nat <: Int <: Number <: Value`), `type` = the membership link
+--- (`Int.ty = Type`). `instanceof` reads `type`-link head then
+--- `parent` walk; the legacy `__tag__` values are superseded (the
+--- bridge keeps them readable until deletion).
+export Int :: type.Int()
+export Str :: type.Str()
+export Bool :: type.Bool()
+export Null :: type.Null()
+export Float :: type.Float()
+export Number :: type.Number()
+export Nat :: type.Nat()
+export Obj :: type.Obj()
+export Array :: type.Array()
+export Value :: type.Value()
+export Type :: type.Type()
+export Unit :: type.Unit()

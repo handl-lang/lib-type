@@ -42,12 +42,23 @@
 --- `hnl-engine-typecheck` abstraction (`check_module`); it is
 --- not declared as `op`/`handl` here because it operates at the
 --- inference layer, not the eval-time dispatch layer.
-
---- ## Type values (type-as-values)
+--- ## Type values (type-as-values) -- seeded nominals (ADR-0154 sec.1/2)
 ---
---- Runtime type values: tagged values representing types. Import these
---- in type signatures and type-level handl code.
-
+--- Runtime type values are *seeded nominals*
+--- `{"__sym__": {handle, name, parent, type}}`: the handle is a content
+--- hash of the `type.<Name>` seed, so `type.Int()` in any module yields
+--- the *same* nominal (deterministic identity -- ADR-0154 sec.1). The
+--- `parent` link encodes subtyping (`Nat <: Int <: Number <: Value`),
+--- the `type` link encodes membership (`Int.ty = Type`) -- the two links
+--- of ADR-0154 sec.2, minted by the host `type.<Name>` ops over
+--- `handl-value`'s `BUILTIN_TYPE_GRAPH`.
+---
+--- `instanceof` = `type`-link head then `parent` walk:
+--- `instanceof(1, Nat)` (literal defaults, ADR-0154 sec.5),
+--- `instanceof(Nat, Int)` (<:), `instanceof(Int, Type)` (membership).
+--- The legacy `__tag__`-string type values are superseded; the
+--- `__tag__` bridge in `instanceof`/`type.ty` keeps tag-minted data
+--- working until deletion lands.
 export Int := type.Int()
 export Str := type.Str()
 export Bool := type.Bool()
@@ -55,36 +66,11 @@ export Null := type.Null()
 export Float := type.Float()
 export Number := type.Number()
 export Nat := type.Nat()
-
---- ## ADR-0106 nominal identities (sym-backed, alongside the legacy tags)
----
---- Nominal identities per ADR-0106 ÃÂÃÂÃÂÃÂ§2. `NumberN` is a root nominal
---- (`sym()` -- a fresh object with a unique nominal identity); `IntN` and
---- `FloatN` are children parented to it (`sym(NumberN)`), so the `sym`
---- parent graph *is* the subtyping relation: `FloatN instanceof NumberN`
---- (runtime parent-chain walk) and `FloatN <: NumberN` (the same walk,
-  --- read statically) with no parallel `Subtype<A, B>` subsystem. `NatN` is
---- parented to `IntN` (`Nat <: Int <: Number`).
----
---- The legacy `__tag__`-tagged values above (Int/Str/Bool/Null/Float/
-  --- Number/Nat) are NOT deleted yet: existing kind predicates and tag
---- checks (`type.is`, `tag.tag_of`, registry equality) match on the
---- `__tag__` string, which a `{"__sym__": ...}` nominal does not carry.
---- Behavior compatibility is preserved by keeping both spellings until
---- consumers migrate. Note the semantic difference: legacy tags compare
---- by structure (two `{__tag__: "int"}` objects are equal) while nominals
---- compare by identity (two `sym()` mints are distinct even with the same
-  --- presentation name) -- and `instanceof` walks the nominal parent chain,
---- never the `__tag__` string.
----
---- Surface: `sym()` / `sym(parent)` need no new syntax -- they parse via
---- the existing `call` rule and resolve through the `sym` module (see
-  --- `SymModule` in `handl-runtime`). `NumberN` below is literally
---- `sym()`; `FloatN` is literally `sym(NumberN)`.
-export NumberN := sym()
-export IntN := sym(NumberN)
-export FloatN := sym(NumberN)
-export NatN := sym(IntN)
+export Obj := type.Obj()
+export Array := type.Array()
+export Value := type.Value()
+export Type := type.Type()
+export Unit := type.Unit()
 
 --- ## Dependent structure (dependent.hnl, ADR-0120 Phase 4)
 ---
