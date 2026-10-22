@@ -78,7 +78,7 @@ export pi_counit := (Q, f, Pi_f) ~> (f >>> Pi_f(Q)) ~[2]~> Q
 ---
 ---   p # v             -- transport `v` along `p`: `v : T[frm]` gives
 ---                        `T[to]` -- transport IS the substitution
----   j p, P, base      -- the J eliminator: `base : P frm p` yields
+---   J p, P, base      -- the J eliminator: `base : P frm p` yields
 ---                        `P to p`
 ---
 --- A transported type keeps the path under `via` -- equality is weak
@@ -90,10 +90,10 @@ export pi_counit := (Q, f, Pi_f) ~> (f >>> Pi_f(Q)) ~[2]~> Q
 --- refinement.
 ---
 --- As vocabulary, `transport` is the arrow-shaped spelling of `p # v`.
---- The `j` eliminator's AST kind and `synth_j` judgment exist (children
---- `path`/`motive`/`base`), but the `j` prefix grammar has no keyword
---- lexer rule yet -- `j` lexes as an ordinary identifier -- so the
---- surface form is produced by desugars/native producers, not parsed:
+--- The J eliminator parses as `J p, P, base` (children
+--- `path`/`motive`/`base`) through `lex.keyword.j` -> `grammar.j.prefix`
+--- -> `synth_j` -- the CAPITAL `J` is the keyword spelling so lowercase
+--- `j` stays an ordinary identifier:
 
 export transport := (p, v) ~> (p # v)
 
