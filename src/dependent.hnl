@@ -157,6 +157,16 @@ export transport := (p, v) ~> (p # v)
 --- equality proof at level 3 remains aspirational.
 
 export id := x ~> id2 x
+--- `Sigma`/`Path` as *term-level* formers: the `{"__tag__": "type.sigma"}`
+--- literal is the mint, not a parallel model — the checker's
+--- `synth_object_record` reads the reserved `__tag__` key and constructs
+--- the real `type.sigma{param, body}` data (`dep_synth_call_type`
+--- synthesizes the same data for `Sigma(A, F)` in type-expression
+--- position, and `path_val` for `Path(a, b)`). The nominal `Former`
+--- shape `{"__former__": <sym>, "indices": [A, F]}` cannot be written in
+--- handl — `__sym__` minting needs the `sym()` host op, which is not in
+--- the checker's term env — so this reserved-key literal stays as the
+--- `.hnl`-expressible bridge until `__tag__` deletion lands.
 export Sigma := (A, F) ~> {"__tag__": "type.sigma", "param": A, "body": F}
 export Path := (a, b) ~> Sigma(a ~[2]~> b, e ~> Sigma(b ~[2]~> a, eInv ~> Sigma((e >>>[2] eInv) ~[3]~> id(a), cohL ~> (eInv >>>[2] e) ~[3]~> id(b))))
 
