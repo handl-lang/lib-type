@@ -151,10 +151,16 @@ export transport := (p, v) ~> (p # v)
 --- dimension-indexed hom `Hom(n, s, t)` (a dimension index, never a
 --- coeffect grade); `id(x)` is the identity cell (`id(f) : Hom(2,f,f)`
 --- on an arrow, `id(a) : Hom(2,a,a)` -- refl -- on an object);
---- `>>>[k]` composes k-cells along their shared boundary. The
---- `~[3]~>` coherence terms parse and store but are not checked --
---- the n >= 3 honest bound -- so the Path data is real while the
---- equality proof at level 3 remains aspirational.
+--- `>>>[k]` composes k-cells along their shared boundary. Since
+--- phase-3 WS-B the `~[n]~>` former checks at *every* literal
+--- dimension -- the boundary law is level-generic and the old n >= 3
+--- stored bound is gone -- and in the Val domain the comp/id trees
+--- these types name are *definitionally* convertible: conv
+--- normalizes `cell.comp`/`cell.id` applications under
+--- associativity, `id_k` unit absorption, and uniform interchange
+--- grids. Tagged-side unification of higher-cell terms stays
+--- under-decided (a `Hom(m >= 3)` mismatch is stuck, not a decided
+--- failure -- the proof-relevance contract).
 
 export id := x ~> id2 x
 --- `Sigma`/`Path` as *term-level* formers: the `{"__tag__": "type.sigma"}`
@@ -170,12 +176,17 @@ export id := x ~> id2 x
 export Sigma := (A, F) ~> {"__tag__": "type.sigma", "param": A, "body": F}
 export Path := (a, b) ~> Sigma(a ~[2]~> b, e ~> Sigma(b ~[2]~> a, eInv ~> Sigma((e >>>[2] eInv) ~[3]~> id(a), cohL ~> (eInv >>>[2] e) ~[3]~> id(b))))
 
---- ## Cell laws, stated for k <= 2 -- stored, not checked (n >= 3)
+--- ## Cell laws, stated for k <= 2 -- `~[3]~>` types check; the
+--- comp/id trees convert definitionally (phase-3 WS-B)
 ---
 --- Associativity and unit laws of vertical composition `>>>[2]`, and
 --- the 2-cell interchange between horizontal `=>|` and vertical `=>>`
---- composition -- all stated as `~[3]~>` equations (level-3 cells,
---- unchecked per the honest bound).
+--- composition -- stated as `~[3]~>` equations. The `Hom(3)` types
+--- check (generic boundary law), and inside `conv` the two sides of
+--- each law normalize to the same canonical comp tree: `comp_assoc`
+--- and the `id_*` units fold by flatten/absorb, `interchange` by the
+--- uniform-grid transpose. The laws' *inhabitants* stay proof-
+--- relevant 3-cells; their endpoint equality is now definitional.
 
 export comp_assoc := (a, b, c) ~> ((a >>>[2] b) >>>[2] c) ~[3]~> (a >>>[2] (b >>>[2] c))
 export id_left := (f, e) ~> (id(f) >>>[2] e) ~[3]~> e
