@@ -67,7 +67,7 @@ export pi_counit := (Q, f, Pi_f) ~> (f >>> Pi_f(Q)) ~[2]~> Q
 
 --- ## Equality is paths -- `Path`, `refl`, transport, and `J`
 ---
---- A `Path{frm, to}` is a 2-cell -- the proof-relevant identity type
+--- A `Path<frm, to>` is a 2-cell -- the proof-relevant identity type
 --- `a ~Path~ b`, written `Path(a, b)` in type-expression position.
 --- `refl` is its introduction form (`refl : Path(a, a)` -- the
 --- endpoints must unify), and dependent elimination binds the

@@ -72,10 +72,11 @@ export Value := type.Value()
 export Type := type.Type()
 export Unit := type.Unit()
 
---- ## `IO(sig)` — the typed-effect former (ADR-0153 sec.4)
+--- ## `IO<sig>` — the typed-effect former (ADR-0153 sec.4)
 ---
---- `IO(sig)` is an indexed former: `sig` is the op-signature record
---- (`{op: Sig, …}`); bare `IO` reads as `IO(⊤)` — the top signature,
+--- `IO<sig>` is an indexed former: `sig` is the op-signature record
+--- (`{op: Sig, …}`), spelled `IO<{ puts: Sig, …}>` in annotation
+--- position; bare `IO` reads as `IO(⊤)` — the top signature,
 --- accepting any. The runtime mint is the ADR-0152 surface former
 --- spelling `{"__former__": <seeded sym>, "indices": [sig]}`; the
 --- checker reads `Former{type.io}` with record-width signature
