@@ -2,9 +2,11 @@
 name = "handl-lib-type"
 version = "0.1.0"
 edition = "2024"
-description = "type: runtime type-introspection interface — Handl stdlib port (ADR-0128 split)."
-license = "MIT OR Apache-2.0"
+description = "type: runtime type-introspection interface — Handl stdlib port."
+license = "MIT"
 repository = "https://github.com/handl-lang/lib-type"
+homepage = "https://github.com/handl-lang/lib-type"
+readme = "README.md"
 
 # `type`/`dependent` are pure handl; `typeof.*` ops are native
 # `handl_ops::Op` impls.
