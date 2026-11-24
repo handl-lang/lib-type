@@ -70,39 +70,39 @@ cap "type.Value"
 cap "type.Type"
 cap "type.Grade"
 cap "type.Unit"
-op "type.is_nominal" : Value -> Bool
+op "type.is_nominal" : Value ~> Bool
   guarantee: True
-op "type.instanceof" : (Value, Value) -> Bool
+op "type.instanceof" : (Value, Value) ~> Bool
   guarantee: True
-op "type.ty" : Value -> Value
+op "type.ty" : Value ~> Value
   guarantee: True
-op "type.of" : Value -> String
+op "type.of" : Value ~> String
   guarantee: IsString(output)
-op "type.type_of" : Value -> String
+op "type.type_of" : Value ~> String
   guarantee: IsString(output)
-op "type.typeof" : Value -> String
+op "type.typeof" : Value ~> String
   guarantee: IsString(output)
-op "type.to_string" : Value -> String
+op "type.to_string" : Value ~> String
   guarantee: IsString(output)
-op "type.to_number" : Value -> Number
+op "type.to_number" : Value ~> Number
   guarantee: True
-op "type.to_bool" : Value -> Bool
+op "type.to_bool" : Value ~> Bool
   guarantee: True
-op "type.identity" : Value -> Value
+op "type.identity" : Value ~> Value
   guarantee: True
-op "type.default" : (Value, Value) -> Value
+op "type.default" : (Value, Value) ~> Value
   guarantee: True
-op "type.coalesce" : Value -> Value
+op "type.coalesce" : Value ~> Value
   guarantee: True
-op "type.is" : (Value, String) -> Bool
+op "type.is" : (Value, String) ~> Bool
   guarantee: True
-op "type.must" : (Value, String) -> Value
+op "type.must" : (Value, String) ~> Value
   guarantee: True
-op "type.may" : (Value, String) -> Bool
+op "type.may" : (Value, String) ~> Bool
   guarantee: True
-op "type.not" : (Value, String) -> Bool
+op "type.not" : (Value, String) ~> Bool
   guarantee: True
-op "type.Unit" : Value -> Value
+op "type.Unit" : Value ~> Value
   guarantee: True
 --- ## Type values (type-as-values) -- seeded nominals (ADR-0154 sec.1/2)
 ---
