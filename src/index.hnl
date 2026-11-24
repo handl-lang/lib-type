@@ -70,6 +70,7 @@ export Obj := type.Obj()
 export Array := type.Array()
 export Value := type.Value()
 export Type := type.Type()
+export Grade := type.Grade()
 export Unit := type.Unit()
 
 --- ## `IO<sig>` — the typed-effect former (ADR-0153 sec.4)
