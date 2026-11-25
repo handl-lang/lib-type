@@ -13,7 +13,7 @@ ADR-0120): the `.hnl` interface plus the Rust crate providing native
 | `src/lib.rs`, `src/ops.rs` | the Rust crate (native `typeof.*` ops) |
 | `atoms.yaml`, `Cargo.toml`, `xtask/` | atoms / manifest / `cargo xtask` gate |
 | `pkg.hnl` | manifest — `modules: ["type", "dependent"]` |
-| `scripts/hnl-gate.sh`, `ci.sh` | the hnl gate / bupha entry |
+| `scripts/hnl-gate.sh`, `workflows/gate.yaml` | the hnl gate / bupha entry |
 
 ## Contract
 
