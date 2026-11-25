@@ -60,10 +60,10 @@ export reindex := (f, P) ~> f >>> P
 ---   pi_unit      : P ~[2]~> Pi_f (f* P)        -- unit of f* -| Pi_f
 ---   pi_counit    : f* (Pi_f Q) ~[2]~> Q        -- counit of f* -| Pi_f
 
-export sigma_unit := (Q, f, Sigma_f) ~> Q ~[2]~> (f >>> Sigma_f(Q))
-export sigma_counit := (P, f, Sigma_f) ~> Sigma_f((f >>> P)) ~[2]~> P
-export pi_unit := (P, f, Pi_f) ~> P ~[2]~> Pi_f((f >>> P))
-export pi_counit := (Q, f, Pi_f) ~> (f >>> Pi_f(Q)) ~[2]~> Q
+export sigma_unit := (Q, f, Sigma_f) ~> Q ~>[2] (f >>> Sigma_f(Q))
+export sigma_counit := (P, f, Sigma_f) ~> Sigma_f((f >>> P)) ~>[2] P
+export pi_unit := (P, f, Pi_f) ~> P ~>[2] Pi_f((f >>> P))
+export pi_counit := (Q, f, Pi_f) ~> (f >>> Pi_f(Q)) ~>[2] Q
 
 --- ## Equality is paths -- `Path`, `refl`, transport, and `J`
 ---
@@ -174,7 +174,7 @@ export id := x ~> id2 x
 --- the checker's term env — so this reserved-key literal stays as the
 --- `.hnl`-expressible bridge until `__tag__` deletion lands.
 export Sigma := (A, F) ~> {"__tag__": "type.sigma", "param": A, "body": F}
-export Path := (a, b) ~> Sigma(a ~[2]~> b, e ~> Sigma(b ~[2]~> a, eInv ~> Sigma((e >>>[2] eInv) ~[3]~> id(a), cohL ~> (eInv >>>[2] e) ~[3]~> id(b))))
+export Path := (a, b) ~> Sigma(a ~>[2] b, e ~> Sigma(b ~>[2] a, eInv ~> Sigma((e >>>[2] eInv) ~>[3] id(a), cohL ~> (eInv >>>[2] e) ~>[3] id(b))))
 
 --- ## Cell laws, stated for k <= 2 -- `~[3]~>` types check; the
 --- comp/id trees convert definitionally (phase-3 WS-B)
@@ -188,7 +188,7 @@ export Path := (a, b) ~> Sigma(a ~[2]~> b, e ~> Sigma(b ~[2]~> a, eInv ~> Sigma(
 --- uniform-grid transpose. The laws' *inhabitants* stay proof-
 --- relevant 3-cells; their endpoint equality is now definitional.
 
-export comp_assoc := (a, b, c) ~> ((a >>>[2] b) >>>[2] c) ~[3]~> (a >>>[2] (b >>>[2] c))
-export id_left := (f, e) ~> (id(f) >>>[2] e) ~[3]~> e
-export id_right := (g, e) ~> (e >>>[2] id(g)) ~[3]~> e
-export interchange := (al, al2, be, be2) ~> ((al =>| al2) =>> (be =>| be2)) ~[3]~> ((al =>> be) =>| (al2 =>> be2))
+export comp_assoc := (a, b, c) ~> ((a >>>[2] b) >>>[2] c) ~>[3] (a >>>[2] (b >>>[2] c))
+export id_left := (f, e) ~> (id(f) >>>[2] e) ~>[3] e
+export id_right := (g, e) ~> (e >>>[2] id(g)) ~>[3] e
+export interchange := (al, al2, be, be2) ~> ((al =>| al2) =>> (be =>| be2)) ~>[3] ((al =>> be) =>| (al2 =>> be2))
