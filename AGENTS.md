@@ -17,8 +17,11 @@ ADR-0120): the `.hnl` interface plus the Rust crate providing native
 
 ## Contract
 
-- Transitional layout: `.hnl` surface (`type` + `dependent` indexed
-  families) + native Rust ops behind it.
+- Spec-driven layout: `.hnl` surface (`type` + `dependent` indexed
+  families) is documentation-only; the `typeof` atom spec is
+  `atoms.yaml` (P-013/T-151) and the native `Op` impls in
+  `src/ops.rs` resolve via the host's `typeof_impls()` table
+  (`plugin-lib-stdlib` `ops/kernel_impls.rs`).
 
 ## Verification
 
