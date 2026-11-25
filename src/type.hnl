@@ -32,7 +32,8 @@
 ---
 --- Field-key kinds (`field.x`, variant-tag complements) are NOT part of
 --- the `type` module -- there is no object-key enumeration primitive. The
---- legacy `typeof` module (`plugin-lib-utils`' `TypeModule`) still provides
+--- `typeof` module (spec-driven via this repo's `atoms.yaml` +
+--- host `typeof_impls()`) still provides
 --- them plus the old short-tag vocabulary ("num"/"str"/"arr"/"obj").
 ---
 --- ## Typecheck engine (Rust)
