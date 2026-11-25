@@ -1,0 +1,43 @@
+# lib-type atom spec (P-013/T-151) — `typeof.*` runtime type-introspection
+# atoms (the legacy `typeof` module surface; the `type.*` nominal-ctor
+# surface is a separate kit-core wiring and keeps its own decls in
+# src/type.hnl).
+#
+# The IDL: name = dispatch key, sig = handl signature (~> canonical),
+# impl = key into the kernel impl table
+# (plugin-lib-stdlib ops::kernel_impls::typeof_impls). The impls are the
+# pub `Op` structs/statics in this crate's src/ops.rs (handl-lib-type).
+# Atoms carry no `sig` — the pre-T-151 `RegistrySource::Kernel` path
+# attached none, so they stay unsigned (dynamic-top) here too.
+module: typeof
+atoms:
+  # Type-tag constants (nullary atoms returning the tag string).
+  - { name: typeof.string, impl: typeof_string_tag }
+  - { name: typeof.str, impl: typeof_str_tag }
+  - { name: typeof.number, impl: typeof_number_tag }
+  - { name: typeof.num, impl: typeof_num_tag }
+  - { name: typeof.bool, impl: typeof_bool_tag }
+  - { name: typeof.null, impl: typeof_null_tag }
+  - { name: typeof.array, impl: typeof_array_tag }
+  - { name: typeof.arr, impl: typeof_arr_tag }
+  - { name: typeof.object, impl: typeof_object_tag }
+  - { name: typeof.obj, impl: typeof_obj_tag }
+  - { name: typeof.any, impl: typeof_any_tag }
+  - { name: typeof.unknown, impl: typeof_unknown_tag }
+  # Kind predicates / projection.
+  - { name: typeof.is, impl: typeof_is }
+  - { name: typeof.must, impl: typeof_must }
+  - { name: typeof.may, impl: typeof_may }
+  - { name: typeof.not, impl: typeof_not }
+  - { name: typeof.when, impl: typeof_when }
+  # Coercion.
+  - { name: typeof.to_string, impl: typeof_to_string }
+  - { name: typeof.to_number, impl: typeof_to_number }
+  - { name: typeof.to_bool, impl: typeof_to_bool }
+  # Type-of (typeof.type_of and typeof.typeof share one impl).
+  - { name: typeof.type_of, impl: typeof_type_of }
+  - { name: typeof.typeof, impl: typeof_type_of }
+  # Utilities.
+  - { name: typeof.identity, impl: typeof_identity }
+  - { name: typeof.default, impl: typeof_default }
+  - { name: typeof.coalesce, impl: typeof_coalesce }
