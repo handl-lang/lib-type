@@ -1,0 +1,23 @@
+--- type -- seeded-nominal smoke tests (ADR-0154).
+---
+--- `type.<Name>` host ops mint deterministic seeded nominals; the
+--- exports must be non-null records with the `__sym__` shape. `IO(sig)`
+--- is the typed-effect former — a `__former__` record carrying `sig`
+--- in `indices`. `dependent.hnl` is typechecker-side vocabulary its
+--- parser extension owns; it is not importable here.
+
+from "./index" import * as m
+from "./type" import * as t
+
+test_int_nominal := assert m.Int != null
+
+test_nat_nominal := assert m.Nat != null
+
+test_all_nominals := assert m.Str != null && m.Bool != null
+  && m.Null != null && m.Float != null && m.Number != null
+  && m.Obj != null && m.Array != null && m.Value != null
+  && m.Type != null && m.Grade != null && m.Unit != null
+
+test_type_module := assert t.Int != null && t.Unit != null
+
+test_io_former := assert m.IO(null).indices[0] == null
